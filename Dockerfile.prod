@@ -1,0 +1,23 @@
+FROM golang:1.16-alpine as build
+
+WORKDIR /app
+
+COPY *.go ./
+
+RUN go build hello-world.go
+
+
+##
+## Deploy
+##
+FROM scratch
+
+WORKDIR /app
+
+COPY --from=build /app/hello-world /app/hello-world
+
+
+ENTRYPOINT [ "./hello-world"]
+
+
+
